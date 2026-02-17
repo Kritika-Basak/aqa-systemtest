@@ -55,3 +55,4 @@
 *.so binary
 *.war binary
 *.zip binary
+openjdk.test.jlm/src/test.jlm/net/adoptopenjdk/test/jlm/testkeys binary

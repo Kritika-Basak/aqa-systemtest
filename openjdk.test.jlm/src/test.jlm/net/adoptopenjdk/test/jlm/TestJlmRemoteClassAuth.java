@@ -63,7 +63,11 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		// Since the password file contains passwords in clear text, for security reasons, 
 		// the JMX implementation checks that the file is only readable by the owner and exits 
 		// with an error if it is not. 
-		test.doChmod("Restricting file permission of jmxremote.passsword to 600", passwordFile, "600");
+		 String os = System.getProperty("os.name").toLowerCase();
+                if (!os.contains("win")) {
+                        test.doChmod("Restricting file permission of jmxremote.passsword to 600", passwordFile, "600");
+                }
+
 	}
 
 	public void execute(StfCoreExtension test) throws StfException {

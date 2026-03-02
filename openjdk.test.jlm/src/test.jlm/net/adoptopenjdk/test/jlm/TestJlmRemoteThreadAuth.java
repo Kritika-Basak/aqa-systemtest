@@ -80,6 +80,8 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 				.addJvmOption("-Xmx256m")
 				.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
+				.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=1234")
+				.addJvmOption("-Djava.rmi.server.hostname=localhost")
 				.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
 				.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
 				.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -145,6 +147,32 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		test.doMonitorProcesses("Wait for the processes to complete", serverProxy, clientProxy);
 		test.doKillProcesses("Stop LT1 process", serverProxy);
 		
+		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
+        .addJvmOption("-Xmx256m")
+        .addJvmOption("-Dcom.sun.management.jmxremote.port=1235")
+        .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=1235")
+        .addJvmOption("-Djava.rmi.server.hostname=localhost")
+        .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
+        .addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
+        .addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
+        .addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
+        .addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
+        .addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
+        .addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
+        .addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
+        .addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
+        .addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
+        .addProjectToClasspath("openjdk.test.lang")
+        .addProjectToClasspath("openjdk.test.util")
+        .addProjectToClasspath("openjdk.test.math")
+        .setTimeLimit("30m")
+        .setAbortAtFailureLimit(-1)
+        .addSuite("mini-mix")
+        .setSuiteNumTests(20000000)
+        .setSuiteInventory(inventoryFile)
+        .setSuiteThreadCount(30)
+        .setSuiteRandomSelection();
+		
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
@@ -173,11 +201,11 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg("1234");
+			.addArg("1235");
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ThreadProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

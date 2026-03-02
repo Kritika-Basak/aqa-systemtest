@@ -64,9 +64,14 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		// the JMX implementation checks that the file is only readable by the owner and exits 
 		// with an error if it is not. 
 		 String os = System.getProperty("os.name").toLowerCase();
-                if (!os.contains("win")) {
-                        test.doChmod("Restricting file permission of jmxremote.passsword to 600", passwordFile, "600");
-                }
+		if (os.contains("win")) {
+			test.doExec("icacls \"" + passwordFile + "\" /inheritance:r");
+			test.doExec("icacls \"" + passwordFile + "\" /grant:r \"" 
+						+ System.getProperty("user.name") + ":R\"");
+		} else {
+    		test.doChmod("Restricting file permission of jmxremote.password to 600",
+						 passwordFile, "600");
+}
 
 	}
 

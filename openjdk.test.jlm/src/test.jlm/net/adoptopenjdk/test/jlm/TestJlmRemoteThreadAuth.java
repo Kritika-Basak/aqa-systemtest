@@ -79,6 +79,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		// end within the setTimeLimit time.
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 				.addJvmOption("-Xmx256m")
+				.addJvmOption("-Dcom.sun.management.jmxremote")
 				.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
 				.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=1234")
 			 	.addJvmOption("-Dcom.sun.management.jmxremote.local.only=false")
@@ -150,6 +151,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
         .addJvmOption("-Xmx256m")
+		.addJvmOption("-Dcom.sun.management.jmxremote")
         .addJvmOption("-Dcom.sun.management.jmxremote.port=1235")
         .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=1235")
 		.addJvmOption("-Dcom.sun.management.jmxremote.local.only=false")

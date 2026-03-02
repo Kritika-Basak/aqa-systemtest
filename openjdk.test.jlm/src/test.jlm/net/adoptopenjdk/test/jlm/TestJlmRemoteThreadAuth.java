@@ -80,8 +80,8 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 				.addJvmOption("-Xmx256m")
 				.addJvmOption("-Dcom.sun.management.jmxremote")
-				.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
-				.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=0")
+				.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
+				.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port)
 			 	.addJvmOption("-Dcom.sun.management.jmxremote.local.only=false")
 				.addJvmOption("-Djava.rmi.server.hostname=localhost")
 				.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
@@ -131,7 +131,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg("1234");
+			.addArg(port);
 		
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running ThreadProfiler Proxy "
@@ -152,8 +152,8 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
         .addJvmOption("-Xmx256m")
 		.addJvmOption("-Dcom.sun.management.jmxremote")
-        .addJvmOption("-Dcom.sun.management.jmxremote.port=1235")
-        .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port=0")
+        .addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
+        .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port)
 		.addJvmOption("-Dcom.sun.management.jmxremote.local.only=false")
         .addJvmOption("-Djava.rmi.server.hostname=localhost")
         .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
@@ -205,7 +205,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg("1235");
+			.addArg(port);
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ThreadProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 

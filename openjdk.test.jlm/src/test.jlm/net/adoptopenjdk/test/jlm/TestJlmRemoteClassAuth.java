@@ -73,7 +73,8 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		
+		String port  = test.env().getFreePort();  
+    	String port2 = test.env().getFreePort(); 
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -157,8 +158,8 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		// Process definition for the monitored server JVM (Phase 2 - different port)
 LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     .addJvmOption("-Xmx256m")
-    .addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
-    .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port)
+    .addJvmOption("-Dcom.sun.management.jmxremote.port="+ port2)
+    .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port2)
     .addJvmOption("-Djava.rmi.server.hostname=localhost")
     .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
     .addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
@@ -208,7 +209,7 @@ LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecifi
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port);
+			.addArg(port2);
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ClassProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 

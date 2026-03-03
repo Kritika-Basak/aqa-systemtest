@@ -73,9 +73,14 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		int variation = test.env().getVariationNumber();
-		  String port  = String.valueOf(12000 + variation * 10);
-    String port2 = String.valueOf(13000 + variation * 10);
+		 int base = 12000;
+    int pid = Math.abs(java.lang.management.ManagementFactory
+            .getRuntimeMXBean()
+            .getName()
+            .hashCode());
+
+    String port  = String.valueOf(base + (pid % 1000));
+    String port2 = String.valueOf(base + 2000 + (pid % 1000));
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		

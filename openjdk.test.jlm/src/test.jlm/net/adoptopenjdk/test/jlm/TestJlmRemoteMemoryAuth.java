@@ -71,15 +71,14 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-			int base = 12000;
-int pidHash = Math.abs(
+		int base = 12000;
+		int pidHash = Math.abs(
         java.lang.management.ManagementFactory
-                .getRuntimeMXBean()
-                .getName()
-                .hashCode());
-
-String port  = String.valueOf(base + (pidHash % 1000));
-String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
+        .getRuntimeMXBean()
+        .getName()
+        .hashCode());
+		String port  = String.valueOf(base + (pidHash % 1000));
+		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -154,7 +153,29 @@ String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
-		
+		LoadTestProcessDefinition serverLoadTestInvocationS = test.createLoadTestSpecification()
+    .addJvmOption("-Xmx256m")
+    .addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
+    .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
+    .addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
+    .addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
+    .addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
+    .addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
+    .addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
+    .addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
+    .addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
+    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
+    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
+    .addProjectToClasspath("openjdk.test.lang")
+    .addProjectToClasspath("openjdk.test.util")
+    .addProjectToClasspath("openjdk.test.math")
+    .setTimeLimit("30m")
+    .setAbortAtFailureLimit(-1)
+    .addSuite("mini-mix")
+    .setSuiteNumTests(20000000)
+    .setSuiteInventory(inventoryFile)
+    .setSuiteThreadCount(30)
+    .setSuiteRandomSelection();
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("smem_server.log");
 		statsFile = resultsDir.childFile("smem_server.csv");
@@ -180,12 +201,12 @@ String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg("1234");
+			.addArg(port2);
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running MemoryProfiler Server test Server "
 				+ "Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocationS);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

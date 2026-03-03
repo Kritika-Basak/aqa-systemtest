@@ -71,8 +71,15 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		 String port = test.env().getFreePort();
-		String port2 = test.env().getFreePort();
+		int base = 12000;
+int pidHash = Math.abs(
+        java.lang.management.ManagementFactory
+                .getRuntimeMXBean()
+                .getName()
+                .hashCode());
+
+String port  = String.valueOf(base + (pidHash % 1000));
+String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		

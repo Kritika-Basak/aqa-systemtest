@@ -69,18 +69,16 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 	}
 
 	public void execute(StfCoreExtension test) throws StfException {
-		
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		 int base = 12000;
-    int pid = Math.abs(java.lang.management.ManagementFactory
-            .getRuntimeMXBean()
-            .getName()
-            .hashCode());
-
-    String port  = String.valueOf(base + (pid % 1000));
-    String port2 = String.valueOf(base + 2000 + (pid % 1000));
+		int base = 12000;
+    	int pid = Math.abs(java.lang.management.ManagementFactory
+        .getRuntimeMXBean()
+        .getName()
+        .hashCode());
+		String port  = String.valueOf(base + (pid % 1000));
+    	String port2 = String.valueOf(base + 2000 + (pid % 1000));
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -89,8 +87,6 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
 			.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
-			.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port)
-            .addJvmOption("-Djava.rmi.server.hostname=localhost")
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
 			.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
 			.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -155,42 +151,33 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		// Wait for the processes to complete
 		test.doMonitorProcesses("Wait for the processes to complete", serverProxy, clientProxy);
 		test.doKillProcesses("Stop LT1 process", serverProxy);
-		// Wait 30 seconds before starting LT2
-		try {
-    		Thread.sleep(30000);
-		} catch (InterruptedException e) {
-    		Thread.currentThread().interrupt();
-		}
-		// Process definition for the monitored server JVM (Phase 2 - different port)
-LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
-    .addJvmOption("-Xmx256m")
-    .addJvmOption("-Dcom.sun.management.jmxremote.port="+ port2)
-    .addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port2)
-    .addJvmOption("-Djava.rmi.server.hostname=localhost")
-    .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
-    .addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
-    .addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
-    .addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
-    .addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
-    .addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
-    .addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
-    .addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
-    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
-    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
-    .addProjectToClasspath("openjdk.test.lang")
-    .addProjectToClasspath("openjdk.test.util")
-    .addProjectToClasspath("openjdk.test.math")
-    .setTimeLimit("30m")
-    .setAbortAtFailureLimit(-1)
-    .addSuite("mini-mix")
-    .setSuiteNumTests(20000000)
-    .setSuiteInventory(inventoryFile)
-    .setSuiteThreadCount(30)
-    .setSuiteRandomSelection();
+		
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
-		
+		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
+    		.addJvmOption("-Xmx256m")
+    		.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port2)
+    		.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
+    		.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
+    		.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
+    		.addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
+    		.addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
+    		.addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
+    		.addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
+    		.addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
+    		.addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
+    		.addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
+    		.addProjectToClasspath("openjdk.test.lang")
+    		.addProjectToClasspath("openjdk.test.util")
+    		.addProjectToClasspath("openjdk.test.math")
+    		.setTimeLimit("30m")
+    		.setAbortAtFailureLimit(-1)
+    		.addSuite("mini-mix")
+    		.setSuiteNumTests(20000000)
+    		.setSuiteInventory(inventoryFile)
+    		.setSuiteThreadCount(30)
+    		.setSuiteRandomSelection();
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("scls_server.log");
 		statsFile = resultsDir.childFile("scls_server.csv");

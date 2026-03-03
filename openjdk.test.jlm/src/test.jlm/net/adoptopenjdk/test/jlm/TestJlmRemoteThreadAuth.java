@@ -89,7 +89,6 @@ String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 				.addJvmOption("-Xmx256m")
 				.addJvmOption("-Dcom.sun.management.jmxremote")
 				.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
-				.addJvmOption("-Dcom.sun.management.jmxremote.rmi.port="+ port)
 			 	.addJvmOption("-Dcom.sun.management.jmxremote.local.only=false")
 				.addJvmOption("-Djava.rmi.server.hostname=localhost")
 				.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")

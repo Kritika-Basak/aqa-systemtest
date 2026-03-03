@@ -153,29 +153,29 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
-		LoadTestProcessDefinition serverLoadTestInvocationS = test.createLoadTestSpecification()
-    .addJvmOption("-Xmx256m")
-    .addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
-    .addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
-    .addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
-    .addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
-    .addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
-    .addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
-    .addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
-    .addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
-    .addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
-    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
-    .addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
-    .addProjectToClasspath("openjdk.test.lang")
-    .addProjectToClasspath("openjdk.test.util")
-    .addProjectToClasspath("openjdk.test.math")
-    .setTimeLimit("30m")
-    .setAbortAtFailureLimit(-1)
-    .addSuite("mini-mix")
-    .setSuiteNumTests(20000000)
-    .setSuiteInventory(inventoryFile)
-    .setSuiteThreadCount(30)
-    .setSuiteRandomSelection();
+		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
+			.addJvmOption("-Xmx256m")
+    		.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
+    		.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
+    		.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
+    		.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
+    		.addJvmOption("-Djavax.net.ssl.keyStoreType=JKS")
+    		.addJvmOption("-Djavax.net.ssl.trustStoreType=JKS")
+    		.addJvmOption("-Djavax.net.ssl.keyStorePassword=passphrase")
+    		.addJvmOption("-Djavax.net.ssl.trustStorePassword=passphrase")
+    		.addJvmOption("-Dcom.sun.management.jmxremote.password.file=" + passwordFile.getSpec())
+    		.addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
+    		.addPrereqJarToClasspath(JavaProcessDefinition.JarId.HAMCREST)
+    		.addProjectToClasspath("openjdk.test.lang")
+    		.addProjectToClasspath("openjdk.test.util")
+    		.addProjectToClasspath("openjdk.test.math")
+    		.setTimeLimit("30m")
+    		.setAbortAtFailureLimit(-1)
+    		.addSuite("mini-mix")
+    		.setSuiteNumTests(20000000)
+    		.setSuiteInventory(inventoryFile)
+    		.setSuiteThreadCount(30)
+    		.setSuiteRandomSelection();
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("smem_server.log");
 		statsFile = resultsDir.childFile("smem_server.csv");
@@ -206,7 +206,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running MemoryProfiler Server test Server "
 				+ "Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocationS);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

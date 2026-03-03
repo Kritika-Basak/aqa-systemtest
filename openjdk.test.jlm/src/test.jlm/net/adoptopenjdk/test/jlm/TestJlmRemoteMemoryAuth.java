@@ -71,8 +71,15 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		String port1 = test.env().getNextAvailablePort();
-		String port2 = test.env().getNextAvailablePort();
+			int base = 12000;
+int pidHash = Math.abs(
+        java.lang.management.ManagementFactory
+                .getRuntimeMXBean()
+                .getName()
+                .hashCode());
+
+String port  = String.valueOf(base + (pidHash % 1000));
+String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -80,7 +87,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		// end within the setTimeLimit time.
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-			.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port1)
+			.addJvmOption("-Dcom.sun.management.jmxremote.port=" +port)
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
 			.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
 			.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -128,7 +135,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port1);
+			.addArg(port);
 		
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running MemoryProfiler Proxy test Server Process(with security)", "LT1", ECHO_OFF, 

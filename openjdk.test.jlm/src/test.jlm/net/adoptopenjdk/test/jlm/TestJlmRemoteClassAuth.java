@@ -72,6 +72,9 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
+		System.out.println("DEBUG: Waiting for port 1234 to be released for 60 seconds");
+		waitForZosPortRelease(1234, 60000);
+		<!--
 		int base = 12000;
     	int pid = Math.abs(java.lang.management.ManagementFactory
         .getRuntimeMXBean()
@@ -79,6 +82,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
         .hashCode());
 		String port  = String.valueOf(base + (pid % 1000));
     	String port2 = String.valueOf(base + 2000 + (pid % 1000));
+		-->
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -86,7 +90,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		// end within the setTimeLimit time.
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-			.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port)
+			.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
 			.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
 			.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -134,7 +138,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port);
+			.addArg("1234");
 		
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running ClassProfiler Proxy "
@@ -155,9 +159,11 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
+		System.out.println("DEBUG: Waiting for port 1234 to be released for 60 seconds");
+		waitForZosPortRelease(1234, 60000);
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
-    		.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port2)
+    		.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
     		.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
     		.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
     		.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -202,7 +208,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port2);
+			.addArg("1234");
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ClassProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 

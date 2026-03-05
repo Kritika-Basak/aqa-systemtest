@@ -74,7 +74,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		 *****************/
 		System.out.println("DEBUG: Waiting for port 1234 to be released for 60 seconds");
 		waitForZosPortRelease(1234, 60000);
-		<!--
+		/*
 		int base = 12000;
     	int pid = Math.abs(java.lang.management.ManagementFactory
         .getRuntimeMXBean()
@@ -82,7 +82,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
         .hashCode());
 		String port  = String.valueOf(base + (pid % 1000));
     	String port2 = String.valueOf(base + 2000 + (pid % 1000));
-		-->
+		*/
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		

@@ -71,6 +71,13 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+		/*
 		int base = 12000;
 		int pidHash = Math.abs(
         java.lang.management.ManagementFactory
@@ -79,6 +86,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
         .hashCode());
 		String port  = String.valueOf(base + (pidHash % 1000));
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
+		*/
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -86,7 +94,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		// end within the setTimeLimit time.
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-			.addJvmOption("-Dcom.sun.management.jmxremote.port=" +port)
+			.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
 			.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
 			.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -134,7 +142,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port);
+			.addArg("1234");
 		
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running MemoryProfiler Proxy test Server Process(with security)", "LT1", ECHO_OFF, 
@@ -153,9 +161,15 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
-		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+/*		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-    		.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
+    		.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
     		.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
     		.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
     		.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -176,6 +190,7 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
     		.setSuiteInventory(inventoryFile)
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
+		*/
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("smem_server.log");
 		statsFile = resultsDir.childFile("smem_server.csv");
@@ -201,12 +216,12 @@ public class TestJlmRemoteMemoryAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg(port2);
+			.addArg("1234");
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running MemoryProfiler Server test Server "
 				+ "Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

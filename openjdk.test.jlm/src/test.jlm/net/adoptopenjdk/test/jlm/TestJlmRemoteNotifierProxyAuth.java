@@ -63,6 +63,12 @@ public class TestJlmRemoteNotifierProxyAuth implements StfPluginInterface {
 	}
 
 	public void execute(StfCoreExtension test) throws StfException {
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("snotif.log");
 		FileRef dumpFile = resultsDir.childFile("javacore.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");

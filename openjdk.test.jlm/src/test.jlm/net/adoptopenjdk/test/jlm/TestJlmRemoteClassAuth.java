@@ -72,8 +72,12 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		System.out.println("DEBUG: Waiting for port 1234 to be released for 60 seconds");
-		Thread.sleep(60000);
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
 		/*
 		int base = 12000;
     	int pid = Math.abs(java.lang.management.ManagementFactory
@@ -160,7 +164,12 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 		 *  Part 2) Drive the test configuration for secure server connection 
 		 *****************/
 		System.out.println("DEBUG: Waiting for port 1234 to be released for 60 seconds");
-		Thread.sleep(60000);
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
     		.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")

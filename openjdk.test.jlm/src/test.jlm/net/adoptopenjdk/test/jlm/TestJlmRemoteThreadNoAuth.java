@@ -58,6 +58,13 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for non-secure proxy connection 
 		 *****************/
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+		/*
 		int base = 12000;
 		int pidHash = Math.abs(
         java.lang.management.ManagementFactory
@@ -66,7 +73,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
         .hashCode());
 		String port  = String.valueOf(base + (pidHash % 1000));
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
-		
+		*/
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("thd_proxy.log");
 		FileRef statsFile = resultsDir.childFile("thd_proxy.csv");
@@ -79,7 +86,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		// end within the setTimeLimit time.
 		LoadTestProcessDefinition serverLoadTestInvocation = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-			.addJvmOption("-Dcom.sun.management.jmxremote.port="+port)
+			.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
 			.addJvmOption("-Dcom.sun.management.jmxremote.authenticate=false")
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl=false")
 			.addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
@@ -107,7 +114,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 			.addArg(statsFile.getSpec())
 			.addArg("anon")
 			.addArg("localhost")
-			.addArg(port);
+			.addArg("1234");
 
 		// Process definition for the client JVM using server connection
 		JavaProcessDefinition clientJavaInvocationServer = test.createJavaProcessDefinition()
@@ -121,7 +128,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 			.addArg(statsFile.getSpec())
 			.addArg("anon")
 			.addArg("localhost")
-			.addArg(port2);
+			.addArg("1234");
 
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running ThreadProfiler "
@@ -142,6 +149,13 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for non-secure server connection 
 		 *****************/
+		try {
+    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    Thread.sleep(60000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+		/*
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
     		.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
@@ -159,6 +173,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteInventory(inventoryFile)
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
+		*/
 		logFile	= resultsDir.childFile("thd_server.log");
 		statsFile = resultsDir.childFile("thd_server.csv");
 		dumpFile = resultsDir.childFile("javacore_thd_server.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");
@@ -166,7 +181,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		// Start the background server process
 		StfProcess serverS = test.doRunBackgroundProcess("Running ThreadProfiler "
 				+ "Server test Server Process(without security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Running the Monitoring "

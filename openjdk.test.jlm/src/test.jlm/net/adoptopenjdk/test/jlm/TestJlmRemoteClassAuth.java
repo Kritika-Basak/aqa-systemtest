@@ -170,6 +170,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
+		/*
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
     		.addJvmOption("-Dcom.sun.management.jmxremote.port=1234")
@@ -193,6 +194,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
     		.setSuiteInventory(inventoryFile)
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
+		*/
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("scls_server.log");
 		statsFile = resultsDir.childFile("scls_server.csv");
@@ -221,7 +223,7 @@ public class TestJlmRemoteClassAuth implements StfPluginInterface {
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ClassProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

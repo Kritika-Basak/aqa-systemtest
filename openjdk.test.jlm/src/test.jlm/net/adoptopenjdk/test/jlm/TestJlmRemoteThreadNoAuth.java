@@ -60,7 +60,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		 *****************/
 		try {
     System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(60000);
+    Thread.sleep(120000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
@@ -151,7 +151,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		 *****************/
 		try {
     System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(60000);
+    Thread.sleep(120000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }

@@ -59,8 +59,8 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		 *  Part 1) Drive the test configuration for non-secure proxy connection 
 		 *****************/
 		try {
-    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(120000);
+    System.out.println("DEBUG: Waiting 180 seconds before continuing...");
+    Thread.sleep(180000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
@@ -151,7 +151,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		 *****************/
 		try {
     System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(120000);
+    Thread.sleep(180000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }

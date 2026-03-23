@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 public class KillPort {
 
     public static void main(String[] args) {
-        int port = 8080;
+        int port = 1234;
 
         try {
             // Find PID using the port

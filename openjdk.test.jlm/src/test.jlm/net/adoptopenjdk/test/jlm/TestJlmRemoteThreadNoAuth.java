@@ -58,13 +58,14 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for non-secure proxy connection 
 		 *****************/
+		/*
 		try {
     System.out.println("DEBUG: Waiting 180 seconds before continuing...");
     Thread.sleep(180000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
-		/*
+		
 		int base = 12000;
 		int pidHash = Math.abs(
         java.lang.management.ManagementFactory
@@ -74,6 +75,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		String port  = String.valueOf(base + (pidHash % 1000));
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		*/
+		KillPort.killPort(port);
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("thd_proxy.log");
 		FileRef statsFile = resultsDir.childFile("thd_proxy.csv");
@@ -149,13 +151,14 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for non-secure server connection 
 		 *****************/
+		/*
 		try {
     System.out.println("DEBUG: Waiting 60 seconds before continuing...");
     Thread.sleep(180000);
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
-		/*
+		
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
     		.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
@@ -174,6 +177,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
 		*/
+		KillPort.killPort(port);
 		logFile	= resultsDir.childFile("thd_server.log");
 		statsFile = resultsDir.childFile("thd_server.csv");
 		dumpFile = resultsDir.childFile("javacore_thd_server.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");

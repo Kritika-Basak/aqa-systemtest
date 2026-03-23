@@ -75,7 +75,8 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		String port  = String.valueOf(base + (pidHash % 1000));
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		*/
-		KillPort.killPort(port);
+		KillPort.killPort(1234);
+		Thread.sleep(50000);
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("thd_proxy.log");
 		FileRef statsFile = resultsDir.childFile("thd_proxy.csv");
@@ -177,7 +178,8 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
 		*/
-		KillPort.killPort(port);
+		KillPort.killPort(1234);
+		Thread.sleep(50000);
 		logFile	= resultsDir.childFile("thd_server.log");
 		statsFile = resultsDir.childFile("thd_server.csv");
 		dumpFile = resultsDir.childFile("javacore_thd_server.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");

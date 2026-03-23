@@ -76,7 +76,11 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		*/
 		KillPort.killPort(1234);
-		Thread.sleep(50000);
+		try {
+    Thread.sleep(50000);
+} catch (InterruptedException e) {
+    throw new StfException("Sleep interrupted", e);
+}
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("thd_proxy.log");
 		FileRef statsFile = resultsDir.childFile("thd_proxy.csv");
@@ -179,7 +183,11 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteRandomSelection();
 		*/
 		KillPort.killPort(1234);
-		Thread.sleep(50000);
+		try {
+    Thread.sleep(50000);
+} catch (InterruptedException e) {
+    throw new StfException("Sleep interrupted", e);
+}
 		logFile	= resultsDir.childFile("thd_server.log");
 		statsFile = resultsDir.childFile("thd_server.csv");
 		dumpFile = resultsDir.childFile("javacore_thd_server.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");

@@ -1,3 +1,4 @@
+package net.adoptopenjdk.test.jlm;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 

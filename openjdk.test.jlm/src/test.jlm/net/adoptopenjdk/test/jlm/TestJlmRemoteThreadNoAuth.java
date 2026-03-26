@@ -75,7 +75,9 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		String port  = String.valueOf(base + (pidHash % 1000));
 		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
 		*/
+		System.out.println("DEBUG: About to kill port 1234");
 		KillPort.killPort(1234);
+		System.out.println("DEBUG: KillPort call finished");
 		try {
     Thread.sleep(50000);
 } catch (InterruptedException e) {
@@ -182,7 +184,9 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
 		*/
+		System.out.println("DEBUG: About to kill port 1234");
 		KillPort.killPort(1234);
+		System.out.println("DEBUG: KillPort call finished");
 		try {
     Thread.sleep(50000);
 } catch (InterruptedException e) {

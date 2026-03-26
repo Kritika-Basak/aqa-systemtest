@@ -137,7 +137,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 			.addArg(statsFile.getSpec())
 			.addArg("anon")
 			.addArg("localhost")
-			.addArg("1234");
+			.addArg("1235");
 
 		// Start the background server process
 		StfProcess serverProxy = test.doRunBackgroundProcess("Running ThreadProfiler "
@@ -165,10 +165,18 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 } catch (InterruptedException e) {
     e.printStackTrace();
 }
-		
+			*/
+		System.out.println("DEBUG: About to kill port 1235");
+		KillPort.killPort(1235);
+		System.out.println("DEBUG: KillPort call finished");
+		try {
+    Thread.sleep(50000);
+} catch (InterruptedException e) {
+    throw new StfException("Sleep interrupted", e);
+}
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
-    		.addJvmOption("-Dcom.sun.management.jmxremote.port=" + port2)
+    		.addJvmOption("-Dcom.sun.management.jmxremote.port=1235")
     		.addJvmOption("-Dcom.sun.management.jmxremote.authenticate=false")
     		.addJvmOption("-Dcom.sun.management.jmxremote.ssl=false")
     		.addPrereqJarToClasspath(JavaProcessDefinition.JarId.JUNIT)
@@ -183,15 +191,6 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
     		.setSuiteInventory(inventoryFile)
     		.setSuiteThreadCount(30)
     		.setSuiteRandomSelection();
-		*/
-		System.out.println("DEBUG: About to kill port 1234");
-		KillPort.killPort(1234);
-		System.out.println("DEBUG: KillPort call finished");
-		try {
-    Thread.sleep(50000);
-} catch (InterruptedException e) {
-    throw new StfException("Sleep interrupted", e);
-}
 		logFile	= resultsDir.childFile("thd_server.log");
 		statsFile = resultsDir.childFile("thd_server.csv");
 		dumpFile = resultsDir.childFile("javacore_thd_server.%Y%m%d.%H%M%S.%pid.%seq.txt,filter=java.lang.IllegalArgumentException");
@@ -199,7 +198,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		// Start the background server process
 		StfProcess serverS = test.doRunBackgroundProcess("Running ThreadProfiler "
 				+ "Server test Server Process(without security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Running the Monitoring "

@@ -58,31 +58,12 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for non-secure proxy connection 
 		 *****************/
-		/*
+		KillPort.killPort(1234)
 		try {
-    System.out.println("DEBUG: Waiting 180 seconds before continuing...");
-    Thread.sleep(180000);
-} catch (InterruptedException e) {
-    e.printStackTrace();
-}
-		
-		int base = 12000;
-		int pidHash = Math.abs(
-        java.lang.management.ManagementFactory
-        .getRuntimeMXBean()
-        .getName()
-        .hashCode());
-		String port  = String.valueOf(base + (pidHash % 1000));
-		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
-		*/
-		System.out.println("DEBUG: About to kill port 1234");
-		KillPort.killPort(1234);
-		System.out.println("DEBUG: KillPort call finished");
-		try {
-    Thread.sleep(50000);
-} catch (InterruptedException e) {
-    throw new StfException("Sleep interrupted", e);
-}
+			Thread.sleep(50000);
+		} catch (InterruptedException e) {
+			throw new StfException("Sleep interrupted", e);
+		}
 		DirectoryRef resultsDir = test.env().getResultsDir();
 		FileRef logFile	= resultsDir.childFile("thd_proxy.log");
 		FileRef statsFile = resultsDir.childFile("thd_proxy.csv");
@@ -158,22 +139,12 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 2) Drive the test configuration for non-secure server connection 
 		 *****************/
-		/*
-		try {
-    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(180000);
-} catch (InterruptedException e) {
-    e.printStackTrace();
-}
-			*/
-		System.out.println("DEBUG: About to kill port 1235");
 		KillPort.killPort(1235);
-		System.out.println("DEBUG: KillPort call finished");
 		try {
-    Thread.sleep(50000);
-} catch (InterruptedException e) {
-    throw new StfException("Sleep interrupted", e);
-}
+			Thread.sleep(50000);
+		} catch (InterruptedException e) {
+    		throw new StfException("Sleep interrupted", e);
+		}
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
     		.addJvmOption("-Xmx256m")
     		.addJvmOption("-Dcom.sun.management.jmxremote.port=1235")

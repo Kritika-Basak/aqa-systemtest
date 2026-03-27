@@ -58,7 +58,7 @@ public class TestJlmRemoteThreadNoAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for non-secure proxy connection 
 		 *****************/
-		KillPort.killPort(1234)
+		KillPort.killPort(1234);
 		try {
 			Thread.sleep(50000);
 		} catch (InterruptedException e) {

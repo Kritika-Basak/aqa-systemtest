@@ -71,22 +71,13 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
+		KillPort.killPort(1234);
 		try {
-    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(60000);
-} catch (InterruptedException e) {
-    e.printStackTrace();
-}
-		/*
-		int base = 12000;
-		int pidHash = Math.abs(
-        java.lang.management.ManagementFactory
-			.getRuntimeMXBean()
-            .getName()
-            .hashCode());
-		String port  = String.valueOf(base + (pidHash % 1000));
-		String port2 = String.valueOf(base + 2000 + (pidHash % 1000));
-		*/
+    		System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    		Thread.sleep(60000);
+		} catch (InterruptedException e) {
+    		e.printStackTrace();
+		}
 		// Process definition for the monitored server JVM
 		String inventoryFile = "/openjdk.test.load/config/inventories/mix/mini-mix.xml";
 		
@@ -163,16 +154,16 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		/*****************
 		*	Part 2) Drive the test configuration for secure server connection 
 		*****************/
+		KillPort.killPort(1235);
 		try {
-    System.out.println("DEBUG: Waiting 60 seconds before continuing...");
-    Thread.sleep(60000);
-} catch (InterruptedException e) {
-    e.printStackTrace();
-}
-		/*
+    		System.out.println("DEBUG: Waiting 60 seconds before continuing...");
+    		Thread.sleep(60000);
+		} catch (InterruptedException e) {
+    		e.printStackTrace();
+		}
 		LoadTestProcessDefinition serverLoadTestInvocation2 = test.createLoadTestSpecification()
 			.addJvmOption("-Xmx256m")
-			.addJvmOption("-Dcom.sun.management.jmxremote.port="+ port2)
+			.addJvmOption("-Dcom.sun.management.jmxremote.port=1235")
 			.addJvmOption("-Dcom.sun.management.jmxremote.ssl.need.client.auth=true")
         	.addJvmOption("-Djavax.net.ssl.keyStore=" + keyStoreFile.getSpec())
         	.addJvmOption("-Djavax.net.ssl.trustStore=" + keyStoreFile.getSpec())
@@ -193,7 +184,6 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
         	.setSuiteInventory(inventoryFile)
         	.setSuiteThreadCount(30)
         	.setSuiteRandomSelection();
-		*/
 		// Process definition for the client JVM that connects with the server via server-connection
 		logFile	= resultsDir.childFile("sthd_server.log");
 		statsFile = resultsDir.childFile("sthd_server.csv");
@@ -218,11 +208,11 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 			.addArg("controlRole")
 			.addArg("control1")
 			.addArg("localhost")
-			.addArg("1234");
+			.addArg("1235");
 
 		// Start the server process
 		StfProcess serverS= test.doRunBackgroundProcess("Running ThreadProfiler Server test Server Process(with security)", "LT2", ECHO_OFF, 
-				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation);
+				ExpectedOutcome.neverCompletes(), serverLoadTestInvocation2);
 		
 		// Start the background client process
 		StfProcess clientS = test.doRunBackgroundProcess("Run the Monitoring Client with server-connection(with security)", 

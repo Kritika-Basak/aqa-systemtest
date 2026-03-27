@@ -7,8 +7,6 @@ public class KillPort {
 
     public static void killPort(int port) {
         try {
-            System.out.println("DEBUG: Attempting to kill port " + port);
-
             Process process = Runtime.getRuntime().exec("fuser -k " + port + "/tcp");
             process.waitFor();
 
@@ -19,9 +17,6 @@ public class KillPort {
             while ((err = stdError.readLine()) != null) {
                 System.out.println("fuser: " + err);
             }
-
-            System.out.println("DEBUG: Kill command executed for port " + port);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

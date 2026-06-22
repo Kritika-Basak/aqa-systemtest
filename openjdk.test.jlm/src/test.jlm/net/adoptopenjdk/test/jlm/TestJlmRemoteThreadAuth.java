@@ -71,7 +71,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		/****************
 		 *  Part 1) Drive the test configuration for secure proxy connection 
 		 *****************/
-		//KillPort.killPort(1234);
+		KillPort.killPort(1234);
 		//try {
     		// System.out.println("DEBUG: Waiting 60 seconds before continuing...");
     		// Thread.sleep(60000);
@@ -154,7 +154,7 @@ public class TestJlmRemoteThreadAuth implements StfPluginInterface {
 		/*****************
 		*	Part 2) Drive the test configuration for secure server connection 
 		*****************/
-		//KillPort.killPort(1234);
+		KillPort.killPort(1234);
 		// try {
     		// System.out.println("DEBUG: Waiting 60 seconds before continuing...");
     		// Thread.sleep(60000);
